@@ -22,10 +22,6 @@ const handler = NextAuth({
                     }),
                 });
                 const user = await res.json();
-                console.log('username',credentials?.username);
-                console.log('password',credentials?.password);
-
-                
                 if (user) {
                     return user;
                 } else {
@@ -38,9 +34,6 @@ const handler = NextAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
           })
     ],
-    // pages: {
-    //     signIn: "/signin",
-    //   },
     callbacks: {
         async jwt({ token, user }) {
             return { ...token, ...user };

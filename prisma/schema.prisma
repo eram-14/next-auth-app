@@ -9,7 +9,7 @@ generator client {
 
 model users {
     id       String @id @default(uuid()) @db.Uuid
-    email    String @unique
+    email_phone    String @unique
     name     String
     password String
     provider String

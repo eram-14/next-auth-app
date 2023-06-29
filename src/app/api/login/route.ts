@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     const user = await prisma.users.findFirst({
         where: {
-            email: body.username
+            email_phone: body.username
         }
     })
     if (user && (await bcrypt.compare(body.password, user.password))) {
