@@ -1,6 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -21,6 +22,10 @@ const handler = NextAuth({
                     }),
                 });
                 const user = await res.json();
+                console.log('username',credentials?.username);
+                console.log('password',credentials?.password);
+
+                
                 if (user) {
                     return user;
                 } else {
