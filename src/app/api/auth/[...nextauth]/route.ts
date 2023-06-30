@@ -32,9 +32,42 @@ const handler = NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-          })
+        })
     ],
     callbacks: {
+        async signIn({ account, profile }) {
+            if (account?.provider === "google") {
+                await fetch("http://localhost:3000/api/allusers",
+                    {
+                        method: 'GET',
+                        redirect: 'follow'
+                    })
+                    .then(response => response.text())
+                    .then(async result => {
+                        var newUser = JSON.parse(result).find((user: { email_phone: string; }) => user.email_phone === profile?.email);
+                        if (newUser === undefined) {
+                            await fetch("http://localhost:3000/api/user", {
+                                method: 'POST',
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    "email_phone": `${profile?.email}`,
+                                    "name": `${profile?.name}`,
+                                    "password": null,
+                                    "provider":"Google"
+                                }),
+                                redirect: 'follow'
+                            })
+                                .then(response => response.text())
+                                .then(result => console.log(result))
+                                .catch(error => console.log('error', error));
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }
+            return true 
+        },
         async jwt({ token, user }) {
             return { ...token, ...user };
         },

@@ -11,7 +11,7 @@ model users {
     id       String @id @default(uuid()) @db.Uuid
     email_phone    String @unique
     name     String
-    password String
+    password String?
     provider String
 }
 
