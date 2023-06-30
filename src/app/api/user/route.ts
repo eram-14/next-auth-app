@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         data: {
             name: body.name,
             email_phone: body.email_phone,
-            password: encryptedPassword,
+            password: encryptedPassword as string,
             provider: body.provider
         },
     });
