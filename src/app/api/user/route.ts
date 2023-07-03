@@ -33,16 +33,16 @@ export async function POST(request: Request) {
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
     const encryptedPassword = body.password !== null ? await bcrypt.hash(body.password, 10) : null
-    // const user = await prisma.users.create({
-    //     data: {
-    //         name: body.name,
-    //         email_phone: body.email_phone,
-    //         password: encryptedPassword as str77777777777777777ing,
-    //         provider: body.provider
-    //     },
-    // });
+    const user = await prisma.users.create({
+        data: {
+            name: body.name,
+            email_phone: body.email_phone,
+            password: encryptedPassword as string,
+            provider: body.provider
+        },
+    });
 
-    // const { password, ...result } = user;
-    // return new Response(JSON.stringify(result), { status: 200 });
-    // return new Response(JSON.stringify("Incorrect Email or Phone Number"), { status: 401 });
+    const { password, ...result } = user;
+    return new Response(JSON.stringify(result), { status: 200 });
+    return new Response(JSON.stringify("Incorrect Email or Phone Number"), { status: 401 });
 }
